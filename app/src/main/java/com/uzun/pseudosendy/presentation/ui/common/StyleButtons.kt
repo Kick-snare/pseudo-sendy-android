@@ -33,6 +33,7 @@ enum class ButtonSize(val width: Dp, val radius: Dp, val padding: Dp) {
 fun BaseRoundedButton(
     onClick: () -> Unit,
     type: ButtonSize,
+    modifier: Modifier,
     colors: ButtonColors,
     content: @Composable RowScope.() -> Unit,
 ) {
@@ -40,7 +41,7 @@ fun BaseRoundedButton(
         onClick = onClick,
         shape = RoundedCornerShape(type.radius),
         colors = colors,
-        modifier = Modifier
+        modifier = modifier
             .padding(vertical = type.padding)
             .width(type.width),
         content = content
@@ -51,6 +52,7 @@ fun BaseRoundedButton(
 fun BaseSquareButton(
     onClick: () -> Unit,
     type: ButtonSize,
+    modifier: Modifier,
     colors: ButtonColors,
     content: @Composable RowScope.() -> Unit,
 ) {
@@ -58,7 +60,7 @@ fun BaseSquareButton(
         onClick = onClick,
         shape = RoundedCornerShape(0.dp),
         colors = colors,
-        modifier = Modifier
+        modifier = modifier
             .padding(vertical = type.padding)
             .width(type.width),
         content = content
@@ -68,12 +70,14 @@ fun BaseSquareButton(
 @Composable
 fun RoundedPrimaryButton(
     onClick: () -> Unit = {},
+    modifier: Modifier = Modifier,
     type: ButtonSize = ButtonSize.NORMAL,
     content: @Composable RowScope.() -> Unit = {},
 ) {
     BaseRoundedButton(
         onClick = onClick,
         type = type,
+        modifier = modifier,
         colors = ButtonDefaults.buttonColors(
             backgroundColor = DayBlueBase,
             contentColor = White,
@@ -87,12 +91,14 @@ fun RoundedPrimaryButton(
 @Composable
 fun SquarePrimaryButton(
     onClick: () -> Unit = {},
+    modifier: Modifier = Modifier,
     type: ButtonSize = ButtonSize.NORMAL,
     content: @Composable RowScope.() -> Unit = {},
 ) {
     BaseSquareButton(
         onClick = onClick,
         type = type,
+        modifier = modifier,
         colors = ButtonDefaults.buttonColors(
             backgroundColor = DayBlueBase,
             contentColor = White,
@@ -106,9 +112,10 @@ fun SquarePrimaryButton(
 @Preview
 @Composable
 fun PreviewButtons() {
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .background(White)
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(White)
     ) {
         RoundedPrimaryButton() { Text("Text for Test") }
         SquarePrimaryButton() { Text("Text for Test") }
