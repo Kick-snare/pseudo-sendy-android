@@ -1,23 +1,22 @@
 package com.uzun.pseudosendy.ui.theme
 
-import androidx.compose.material.Typography
-import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.uzun.pseudosendy.R
 import javax.annotation.concurrent.Immutable
 
-val Typography = Typography(
-    body1 = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp
-    )
+
+val NotoSansKR = FontFamily(
+    Font(R.font.notosanskr_black, FontWeight.Black, FontStyle.Normal),
+    Font(R.font.notosanskr_bold, FontWeight.Bold, FontStyle.Normal),
+    Font(R.font.notosanskr_medium, FontWeight.Medium, FontStyle.Normal),
+    Font(R.font.notosanskr_regular, FontWeight.Normal, FontStyle.Normal),
+    Font(R.font.notosanskr_light, FontWeight.Light, FontStyle.Normal),
+    Font(R.font.notosanskr_thin, FontWeight.Thin, FontStyle.Normal),
 )
 
 @Immutable
@@ -114,11 +113,4 @@ data class SendyTypography(
     ),
 )
 
-val NotoSansKR = FontFamily(
-    Font(R.font.notosanskr_black, FontWeight.Black, FontStyle.Normal),
-    Font(R.font.notosanskr_bold, FontWeight.Bold, FontStyle.Normal),
-    Font(R.font.notosanskr_medium, FontWeight.Medium, FontStyle.Normal),
-    Font(R.font.notosanskr_regular, FontWeight.Normal, FontStyle.Normal),
-    Font(R.font.notosanskr_light, FontWeight.Light, FontStyle.Normal),
-    Font(R.font.notosanskr_thin, FontWeight.Thin, FontStyle.Normal),
-)
+val sendyTypography = SendyTypography()

@@ -13,14 +13,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            val localSendyTypography = staticCompositionLocalOf { SendyTypography() }
-
-            CompositionLocalProvider(
-                localSendyTypography provides SendyTypography()
-            ) {
-                PseudoSendyTheme {
-                    OrderFormScreen()
-                }
+            PseudoSendyTheme {
+//                    OrderFormScreen()
             }
         }
     }
