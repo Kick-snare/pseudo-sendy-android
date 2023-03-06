@@ -5,14 +5,19 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.PlatformTextStyle
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
 import com.uzun.pseudosendy.presentation._const.UIConst.SPACE_XL
 import com.uzun.pseudosendy.presentation._const.UIConst.SPACE_XS
 import com.uzun.pseudosendy.presentation.ui.common.ButtonSize
 import com.uzun.pseudosendy.presentation.ui.common.RoundedPrimaryButton
+import com.uzun.pseudosendy.ui.theme.NotoSansKR
 import com.uzun.pseudosendy.ui.theme.PseudoSendyTheme
 
-@Preview
+
 @Composable
 fun OrderFormMainScreen() {
     Box(
@@ -26,15 +31,12 @@ fun OrderFormMainScreen() {
 }
 
 @Composable
-fun BoxScope.OrderFormContent(
-    modifier: Modifier = Modifier.fillMaxSize(),
-) {
-    Column(modifier) {
+fun BoxScope.OrderFormContent() =
+    Column(modifier = Modifier.fillMaxSize()) {
         OrderFormMainHeadTextArea()
         Spacer(Modifier.size(SPACE_XL))
         OrderTypeCards()
     }
-}
 
 @Composable
 fun ColumnScope.OrderFormMainHeadTextArea() {
@@ -83,11 +85,18 @@ fun BoxScope.CheckTransportationFeeButton(
     RoundedPrimaryButton(
         onClick = onClick,
         modifier = Modifier.align(Alignment.BottomCenter),
-        type = ButtonSize.LARGE
     ) {
         Text(
             text = "운송비용 확인하기",
             style = PseudoSendyTheme.typography.Normal
         )
+    }
+}
+
+@Preview
+@Composable
+fun PreviewOrderFormMainScreen() {
+    PseudoSendyTheme {
+        OrderFormMainScreen()
     }
 }
