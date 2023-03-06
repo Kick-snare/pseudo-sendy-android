@@ -1,10 +1,12 @@
 package com.uzun.pseudosendy.ui.theme
 
+import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import com.uzun.pseudosendy.R
 import javax.annotation.concurrent.Immutable
@@ -19,98 +21,33 @@ val NotoSansKR = FontFamily(
     Font(R.font.notosanskr_thin, FontWeight.Thin, FontStyle.Normal),
 )
 
+fun getNotoSansTextStyle(fontSize : TextUnit, weight: FontWeight = FontWeight.Normal) = TextStyle(
+    fontFamily = NotoSansKR,
+    fontWeight = weight,
+    fontSize = fontSize,
+    platformStyle = PlatformTextStyle(includeFontPadding = false),
+)
+
 @Immutable
 data class SendyTypography(
-    val XXXLBold : TextStyle = TextStyle(
-        fontFamily = NotoSansKR,
-        fontWeight = FontWeight.Bold,
-        fontSize = 32.sp
-    ),
-    val XXXL : TextStyle = TextStyle(
-        fontFamily = NotoSansKR,
-        fontWeight = FontWeight.Normal,
-        fontSize = 32.sp
-    ),
-    val XXLBold : TextStyle = TextStyle(
-        fontFamily = NotoSansKR,
-        fontWeight = FontWeight.Bold,
-        fontSize = 28.sp
-    ),
-    val XXL : TextStyle = TextStyle(
-        fontFamily = NotoSansKR,
-        fontWeight = FontWeight.Normal,
-        fontSize = 28.sp
-    ),
-    val XLBold : TextStyle = TextStyle(
-        fontFamily = NotoSansKR,
-        fontWeight = FontWeight.Bold,
-        fontSize = 24.sp
-    ),
-    val XL : TextStyle = TextStyle(
-        fontFamily = NotoSansKR,
-        fontWeight = FontWeight.Normal,
-        fontSize = 24.sp
-    ),
-    val LargeBold : TextStyle = TextStyle(
-        fontFamily = NotoSansKR,
-        fontWeight = FontWeight.Bold,
-        fontSize = 20.sp
-    ),
-    val Large : TextStyle = TextStyle(
-        fontFamily = NotoSansKR,
-        fontWeight = FontWeight.Normal,
-        fontSize = 20.sp
-    ),
-    val MediumBold : TextStyle = TextStyle(
-        fontFamily = NotoSansKR,
-        fontWeight = FontWeight.Bold,
-        fontSize = 18.sp
-    ),
-    val Medium : TextStyle = TextStyle(
-        fontFamily = NotoSansKR,
-        fontWeight = FontWeight.Normal,
-        fontSize = 18.sp
-    ),
-    val NormalBold : TextStyle = TextStyle(
-        fontFamily = NotoSansKR,
-        fontWeight = FontWeight.Bold,
-        fontSize = 16.sp
-    ),
-    val Normal : TextStyle = TextStyle(
-        fontFamily = NotoSansKR,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp
-    ),
-    val SmallBold : TextStyle = TextStyle(
-        fontFamily = NotoSansKR,
-        fontWeight = FontWeight.Bold,
-        fontSize = 14.sp
-    ),
-    val Small : TextStyle = TextStyle(
-        fontFamily = NotoSansKR,
-        fontWeight = FontWeight.Normal,
-        fontSize = 14.sp
-    ),
-    val XSBold : TextStyle = TextStyle(
-        fontFamily = NotoSansKR,
-        fontWeight = FontWeight.Bold,
-        fontSize = 13.sp
-    ),
-    val XS : TextStyle = TextStyle(
-        fontFamily = NotoSansKR,
-        fontWeight = FontWeight.Normal,
-        fontSize = 13.sp
-    ),
-    val XXSBold : TextStyle = TextStyle(
-        fontFamily = NotoSansKR,
-        fontWeight = FontWeight.Bold,
-        fontSize = 12.sp
-    ),
-    val XXS : TextStyle = TextStyle(
-        fontFamily = NotoSansKR,
-        fontWeight = FontWeight.Normal,
-        fontSize = 12.sp
-    ),
+    val XXXLBold : TextStyle = getNotoSansTextStyle(32.sp, FontWeight.Bold),
+    val XXXL : TextStyle = getNotoSansTextStyle(32.sp),
+    val XXLBold : TextStyle = getNotoSansTextStyle(28.sp, FontWeight.Bold),
+    val XXL : TextStyle = getNotoSansTextStyle(28.sp),
+    val XLBold : TextStyle = getNotoSansTextStyle(24.sp, FontWeight.Bold),
+    val XL : TextStyle = getNotoSansTextStyle(24.sp),
+    val LargeBold : TextStyle = getNotoSansTextStyle(20.sp, FontWeight.Bold),
+    val Large : TextStyle = getNotoSansTextStyle(20.sp),
+    val MediumBold : TextStyle = getNotoSansTextStyle(18.sp, FontWeight.Bold),
+    val Medium : TextStyle = getNotoSansTextStyle(18.sp),
+    val NormalBold : TextStyle = getNotoSansTextStyle(16.sp, FontWeight.Bold),
+    val Normal : TextStyle = getNotoSansTextStyle(16.sp),
+    val SmallBold : TextStyle = getNotoSansTextStyle(14.sp, FontWeight.Bold),
+    val Small : TextStyle = getNotoSansTextStyle(14.sp),
+    val XSBold : TextStyle = getNotoSansTextStyle(13.sp, FontWeight.Bold),
+    val XS : TextStyle = getNotoSansTextStyle(13.sp),
+    val XXSBold : TextStyle = getNotoSansTextStyle(12.sp, FontWeight.Bold),
+    val XXS : TextStyle = getNotoSansTextStyle(12.sp),
 )
 
 val sendyTypography = SendyTypography()
