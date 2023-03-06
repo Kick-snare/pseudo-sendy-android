@@ -20,10 +20,11 @@ private val LightColorPalette = lightColors(
     secondary = Teal200
 )
 
+val localSendyTypography = staticCompositionLocalOf { sendyTypography }
+
 @Composable
 fun PseudoSendyTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
 
-    val localSendyTypography = staticCompositionLocalOf { sendyTypography }
     val colors = if (false) DarkColorPalette else LightColorPalette
 
     CompositionLocalProvider(
@@ -35,7 +36,10 @@ fun PseudoSendyTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Compo
             content = content
         )
     }
+}
 
-
-
+object PseudoSendyTheme {
+    val typography: SendyTypography
+        @Composable
+        get() = localSendyTypography.current
 }
