@@ -12,13 +12,8 @@ fun OrderFormScreen(
 ) {
     NavHost(
         navController = navController,
-        startDestination = OrderFormRoute.SPLASH.route
+        startDestination = OrderFormRoute.ORDER_FORM_MAIN.route
     ) {
-        composable(
-            route = OrderFormRoute.SPLASH.route
-        ) {
-            // TODO
-        }
 
         composable(
             route = OrderFormRoute.ORDER_FORM_MAIN.route
@@ -59,7 +54,6 @@ fun OrderFormScreen(
 }
 
 enum class OrderFormRoute(val route: String) {
-    SPLASH("splash"),
     ORDER_FORM_MAIN("order-form-main"),
     DATE_TIME_SELECTION("date-time-selection"),
     LOCATION_SELECTION("location-selection"),
