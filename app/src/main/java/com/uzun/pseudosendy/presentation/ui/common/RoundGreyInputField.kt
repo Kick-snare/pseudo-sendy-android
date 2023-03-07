@@ -25,7 +25,7 @@ fun RoundGreyInputField(
         .padding(vertical = UIConst.SPACE_S),
 ) {
     Row(
-        modifier = modifier,
+        modifier = modifier.fillMaxWidth().align(Alignment.CenterStart),
         verticalAlignment = Alignment.CenterVertically,
         content = content
     )

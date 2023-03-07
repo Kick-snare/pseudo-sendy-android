@@ -22,6 +22,7 @@ import com.uzun.pseudosendy.presentation.ui.orderform.OrderFormContract.OrderFor
 import com.uzun.pseudosendy.presentation.ui.orderform.datetime.DateTimeScreen
 import com.uzun.pseudosendy.presentation.ui.orderform.location.LocationScreen
 import com.uzun.pseudosendy.presentation.ui.orderform.main.OrderFormMainScreen
+import com.uzun.pseudosendy.presentation.ui.orderform.vehicle.VehicleScreen
 import com.uzun.pseudosendy.ui.theme.White
 
 @Composable
@@ -138,7 +139,7 @@ fun OrderFormNavGraph(navController: NavHostController) {
         composable(
             route = OrderFormRoute.VEHICLE_SELECTION.route
         ) {
-            Text("VEHICLE_SELECTION")
+            VehicleScreen()
         }
 
         composable(

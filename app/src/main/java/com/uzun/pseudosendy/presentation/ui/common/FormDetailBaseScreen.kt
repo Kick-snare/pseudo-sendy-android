@@ -31,7 +31,7 @@ fun FormDetailBaseScreen(
             .padding(horizontal = UIConst.SPACE_XL)
     ) {
         LazyColumn(
-            modifier = modifier,
+            modifier = modifier.fillMaxWidth(),
             verticalArrangement = arrangement
         ) {
             typeInformation(cardType)
