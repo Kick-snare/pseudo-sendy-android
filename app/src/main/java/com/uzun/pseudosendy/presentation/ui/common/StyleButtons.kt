@@ -42,8 +42,9 @@ fun BaseRoundedButton(
         shape = RoundedCornerShape(type.radius),
         colors = colors,
         modifier = modifier
-            .padding(vertical = type.padding)
-            .width(type.width),
+            .fillMaxWidth(),
+//            .width(type.width),
+        contentPadding = PaddingValues(type.padding),
         content = content
     )
 }
@@ -60,9 +61,9 @@ fun BaseSquareButton(
         onClick = onClick,
         shape = RoundedCornerShape(0.dp),
         colors = colors,
-        modifier = modifier
-            .padding(vertical = type.padding)
-            .width(type.width),
+        modifier = modifier.fillMaxWidth(),
+//            .width(type.width)
+        contentPadding = PaddingValues(type.padding),
         content = content
     )
 }

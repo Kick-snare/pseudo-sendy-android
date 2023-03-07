@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.uzun.pseudosendy.presentation.ui.orderform.OrderFormScreen
-import com.uzun.pseudosendy.presentation.ui.orderform.main.PreviewOrderTypeCards
 import com.uzun.pseudosendy.ui.theme.PseudoSendyTheme
 
 class MainActivity : ComponentActivity() {
