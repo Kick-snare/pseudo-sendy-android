@@ -1,22 +1,19 @@
 package com.uzun.pseudosendy.presentation.ui.orderform.main
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.PlatformTextStyle
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
 import com.uzun.pseudosendy.presentation._const.UIConst.SPACE_XL
 import com.uzun.pseudosendy.presentation._const.UIConst.SPACE_XS
-import com.uzun.pseudosendy.presentation.ui.common.ButtonSize
 import com.uzun.pseudosendy.presentation.ui.common.RoundedPrimaryButton
-import com.uzun.pseudosendy.ui.theme.NotoSansKR
 import com.uzun.pseudosendy.ui.theme.PseudoSendyTheme
-
 
 @Composable
 fun OrderFormMainScreen() {
@@ -32,49 +29,24 @@ fun OrderFormMainScreen() {
 
 @Composable
 fun BoxScope.OrderFormContent() =
-    Column(modifier = Modifier.fillMaxSize()) {
-        OrderFormMainHeadTextArea()
-        Spacer(Modifier.size(SPACE_XL))
-        OrderTypeCards()
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
+        orderFormMainHeadTextArea()
+        item { Spacer(Modifier.size(SPACE_XL)) }
+        orderTypeCards()
     }
 
-@Composable
-fun ColumnScope.OrderFormMainHeadTextArea() {
+fun LazyListScope.orderFormMainHeadTextArea() = item {
     Text(text = "센디 용달 예약하기", style = PseudoSendyTheme.typography.XLBold)
     Spacer(Modifier.size(SPACE_XS))
     Text(text = "원하시는 항목부터 입력해주세요", style = PseudoSendyTheme.typography.Normal)
 }
 
-
-@Composable
-fun OrderTypeCards() {
-    Column(verticalArrangement = Arrangement.spacedBy(SPACE_XS)) {
-        OrderTypeCard(
-            type = CardType.DATETIME,
-            onClick = {},
-        ) {
-
+fun LazyListScope.orderTypeCards() {
+    CardType.values().forEach { cardType ->
+        item{
+            OrderTypeCard(type = cardType) {}
+            Spacer(Modifier.size(SPACE_XS))
         }
-
-        OrderTypeCard(
-            type = CardType.LOCATION,
-            onClick = {},
-        ) { }
-
-        OrderTypeCard(
-            type = CardType.VEHICLE,
-            onClick = {},
-        ) { }
-
-        OrderTypeCard(
-            type = CardType.LOAD_DETAIL,
-            onClick = {},
-        ) { }
-
-        OrderTypeCard(
-            type = CardType.SERVICE_OPTION,
-            onClick = {},
-        ) { }
     }
 }
 
@@ -84,7 +56,9 @@ fun BoxScope.CheckTransportationFeeButton(
 ) {
     RoundedPrimaryButton(
         onClick = onClick,
-        modifier = Modifier.align(Alignment.BottomCenter),
+        modifier = Modifier
+            .align(Alignment.BottomCenter)
+            .padding(bottom = SPACE_XL),
     ) {
         Text(
             text = "운송비용 확인하기",
@@ -97,6 +71,8 @@ fun BoxScope.CheckTransportationFeeButton(
 @Composable
 fun PreviewOrderFormMainScreen() {
     PseudoSendyTheme {
-        OrderFormMainScreen()
+        Column(Modifier.background(Color.White).fillMaxSize()) {
+            OrderFormMainScreen()
+        }
     }
 }
