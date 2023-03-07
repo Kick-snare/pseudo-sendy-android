@@ -16,23 +16,25 @@ import com.uzun.pseudosendy.presentation.ui.common.RoundedPrimaryButton
 import com.uzun.pseudosendy.ui.theme.PseudoSendyTheme
 
 @Composable
-fun OrderFormMainScreen() {
+fun OrderFormMainScreen(
+    navigateFromOrderFormMainList : List<() -> Unit> = emptyList()
+) {
     Box(
         Modifier
             .fillMaxSize()
             .padding(horizontal = SPACE_XL)
     ) {
-        OrderFormContent()
+        OrderFormContent(navigateFromOrderFormMainList)
         CheckTransportationFeeButton {}
     }
 }
 
 @Composable
-fun BoxScope.OrderFormContent() =
+fun BoxScope.OrderFormContent(navigateList : List<() -> Unit>) =
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         orderFormMainHeadTextArea()
         item { Spacer(Modifier.size(SPACE_XL)) }
-        orderTypeCards()
+        orderTypeCards(navigateList)
     }
 
 fun LazyListScope.orderFormMainHeadTextArea() = item {
@@ -41,10 +43,18 @@ fun LazyListScope.orderFormMainHeadTextArea() = item {
     Text(text = "원하시는 항목부터 입력해주세요", style = PseudoSendyTheme.typography.Normal)
 }
 
-fun LazyListScope.orderTypeCards() {
-    CardType.values().forEach { cardType ->
+fun LazyListScope.orderTypeCards(navigateList : List<() -> Unit>) {
+    CardType.values().forEachIndexed { index, cardType ->
         item{
-            OrderTypeCard(type = cardType) {}
+            OrderTypeCard(type = cardType, onClick = navigateList[index]) {
+                when(cardType) {
+                    CardType.DATETIME -> {}
+                    CardType.LOCATION -> {}
+                    CardType.VEHICLE -> {}
+                    CardType.LOAD_DETAIL -> {}
+                    CardType.SERVICE_OPTION -> {}
+                }
+            }
             Spacer(Modifier.size(SPACE_XS))
         }
     }
