@@ -20,6 +20,7 @@ import com.uzun.pseudosendy.presentation._const.UIConst.SPACE_XS
 import com.uzun.pseudosendy.presentation.ui.orderform.OrderFormContract.OrderFormUiEvent
 import com.uzun.pseudosendy.presentation.ui.orderform.OrderFormContract.OrderFormUiSideEffect
 import com.uzun.pseudosendy.presentation.ui.orderform.datetime.DateTimeScreen
+import com.uzun.pseudosendy.presentation.ui.orderform.location.LocationScreen
 import com.uzun.pseudosendy.presentation.ui.orderform.main.OrderFormMainScreen
 import com.uzun.pseudosendy.ui.theme.White
 
@@ -131,7 +132,7 @@ fun OrderFormNavGraph(navController: NavHostController) {
         composable(
             route = OrderFormRoute.LOCATION_SELECTION.route
         ) {
-            Text("LOCATION_SELECTION")
+            LocationScreen()
         }
 
         composable(
