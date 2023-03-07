@@ -6,6 +6,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -46,26 +47,46 @@ fun OrderFormTopBar(
     onClickBackButton: () -> Unit,
     onClickDeleteButton: () -> Unit,
 ) {
-    Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
+    Box(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = SPACE_XS)
             .padding(vertical = 11.dp)
     ) {
-        IconButton(onClickBackButton) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_back_24),
-                contentDescription = "back button"
-            )
-        }
-        IconButton(onClickDeleteButton) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_delete_bin),
-                contentDescription = "delete written form"
-            )
-        }
+        TopBackIconButton(onClick = onClickBackButton)
+        TopDeleteIconButton(onClick = onClickDeleteButton)
+    }
+}
 
+@Composable
+fun BoxScope.TopBackIconButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+) {
+    IconButton(
+        modifier = modifier.align(Alignment.CenterStart),
+        onClick = onClick
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_back_24),
+            contentDescription = "back button"
+        )
+    }
+}
+
+@Composable
+fun BoxScope.TopDeleteIconButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+) {
+    IconButton(
+        modifier = modifier.align(Alignment.CenterEnd),
+        onClick = onClick
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_delete_bin),
+            contentDescription = "delete written form"
+        )
     }
 }
 
