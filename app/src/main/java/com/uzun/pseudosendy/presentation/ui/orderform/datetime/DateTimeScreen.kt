@@ -36,7 +36,7 @@ fun DateTimeScreen(
 
 fun LazyListScope.guideText() = item {
     Text(
-        text = "필요한 차량과 차량 옵션을 모두 선택해주세요.",
+        text = "운송 시작일을 알려주세요.",
         style = PseudoSendyTheme.typography.Small
     )
 }
