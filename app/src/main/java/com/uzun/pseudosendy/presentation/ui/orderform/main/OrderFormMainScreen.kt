@@ -7,14 +7,14 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.uzun.pseudosendy.presentation._const.UIConst.SPACE_XL
 import com.uzun.pseudosendy.presentation._const.UIConst.SPACE_XS
-import com.uzun.pseudosendy.presentation.ui.common.RoundedPrimaryButton
+import com.uzun.pseudosendy.presentation.ui.common.FloatingRoundBottomButton
+import com.uzun.pseudosendy.presentation.ui.orderform.OrderFormContract.OrderFormUiEvent
 import com.uzun.pseudosendy.presentation.ui.orderform.OrderFormContract.OrderFormUiSideEffect
 import com.uzun.pseudosendy.presentation.ui.orderform.OrderFormContract.OrderFormUiSideEffect.*
 import com.uzun.pseudosendy.presentation.ui.orderform.OrderFormViewModel
@@ -45,10 +45,8 @@ fun OrderFormMainScreen(
             .fillMaxSize()
             .padding(horizontal = SPACE_XL)
     ) {
-        OrderFormContent(
-            onCardClickedList = vm.onCardClickedList
-        )
-        CheckTransportationFeeButton {}
+        OrderFormContent(onCardClickedList = vm.onCardClickedList)
+        CheckTransportationFeeButton { vm.setEvent(OrderFormUiEvent.OnPaySelectionButtonClicked) }
     }
 }
 
@@ -87,21 +85,9 @@ fun LazyListScope.orderTypeCards(onCardClickedList: List<() -> Unit>) {
 }
 
 @Composable
-fun BoxScope.CheckTransportationFeeButton(
-    onClick: () -> Unit,
-) {
-    RoundedPrimaryButton(
-        onClick = onClick,
-        modifier = Modifier
-            .align(Alignment.BottomCenter)
-            .padding(bottom = SPACE_XL),
-    ) {
-        Text(
-            text = "운송비용 확인하기",
-            style = PseudoSendyTheme.typography.Normal
-        )
-    }
-}
+fun BoxScope.CheckTransportationFeeButton(onClick: () -> Unit)
+    = FloatingRoundBottomButton("운송비용 확인하기", onClick)
+
 
 @Preview
 @Composable

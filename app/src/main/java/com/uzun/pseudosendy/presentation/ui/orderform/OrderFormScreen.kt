@@ -19,6 +19,7 @@ import com.uzun.pseudosendy.R
 import com.uzun.pseudosendy.presentation._const.UIConst.SPACE_XS
 import com.uzun.pseudosendy.presentation.ui.orderform.OrderFormContract.OrderFormUiEvent
 import com.uzun.pseudosendy.presentation.ui.orderform.OrderFormContract.OrderFormUiSideEffect
+import com.uzun.pseudosendy.presentation.ui.orderform.datetime.DateTimeScreen
 import com.uzun.pseudosendy.presentation.ui.orderform.main.OrderFormMainScreen
 import com.uzun.pseudosendy.ui.theme.White
 
@@ -101,31 +102,30 @@ fun OrderFormNavGraph(navController: NavHostController) {
         composable(
             route = OrderFormRoute.ORDER_FORM_MAIN.route
         ) {
-            OrderFormMainScreen(
-                cardNavMap = mapOf(
-                    OrderFormUiSideEffect.NavigateToDateTimeScreen to {
-                        navController.navigate(OrderFormRoute.DATE_TIME_SELECTION.route)
-                    },
-                    OrderFormUiSideEffect.NavigateToLocationScreen to {
-                        navController.navigate(OrderFormRoute.LOCATION_SELECTION.route)
-                    },
-                    OrderFormUiSideEffect.NavigateToVehicleScreen to {
-                        navController.navigate(OrderFormRoute.VEHICLE_SELECTION.route)
-                    },
-                    OrderFormUiSideEffect.NavigateToLoadDetailScreen to {
-                        navController.navigate(OrderFormRoute.LOAD_DETAIL.route)
-                    },
-                    OrderFormUiSideEffect.NavigateToServiceOptionScreen to {
-                        navController.navigate(OrderFormRoute.SERVICE_OPTION_SELECTION.route)
-                    }
-                )
+            val cardNavMap = mapOf(
+                OrderFormUiSideEffect.NavigateToDateTimeScreen to {
+                    navController.navigate(OrderFormRoute.DATE_TIME_SELECTION.route)
+                },
+                OrderFormUiSideEffect.NavigateToLocationScreen to {
+                    navController.navigate(OrderFormRoute.LOCATION_SELECTION.route)
+                },
+                OrderFormUiSideEffect.NavigateToVehicleScreen to {
+                    navController.navigate(OrderFormRoute.VEHICLE_SELECTION.route)
+                },
+                OrderFormUiSideEffect.NavigateToLoadDetailScreen to {
+                    navController.navigate(OrderFormRoute.LOAD_DETAIL.route)
+                },
+                OrderFormUiSideEffect.NavigateToServiceOptionScreen to {
+                    navController.navigate(OrderFormRoute.SERVICE_OPTION_SELECTION.route)
+                }
             )
+            OrderFormMainScreen(cardNavMap = cardNavMap)
         }
 
         composable(
             route = OrderFormRoute.DATE_TIME_SELECTION.route
         ) {
-            Text("DATE_TIME_SELECTION")
+            DateTimeScreen()
         }
 
         composable(
