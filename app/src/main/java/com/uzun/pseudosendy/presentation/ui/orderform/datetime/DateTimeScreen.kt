@@ -45,7 +45,7 @@ fun LazyListScope.datePicker(onClick: () -> Unit) = item {
     RoundGreyInputField(
         onClick = onClick,
         extraContent = { EndedRightArrowIcon() },
-        content = { IconWithGreyText(R.drawable.ic_date, "출발지 주소 입력하기") }
+        content = { IconWithGreyText(R.drawable.ic_date, "날짜 선택하기") }
     )
 }
 
@@ -53,7 +53,7 @@ fun LazyListScope.timePicker(onClick: () -> Unit) = item {
     RoundGreyInputField(
         onClick = onClick,
         extraContent = { EndedRightArrowIcon() },
-        content = { IconWithGreyText(R.drawable.ic_clock, "도착지 주소 입력하기") }
+        content = { IconWithGreyText(R.drawable.ic_clock, "시간 선택하기") }
     )
 }
 
