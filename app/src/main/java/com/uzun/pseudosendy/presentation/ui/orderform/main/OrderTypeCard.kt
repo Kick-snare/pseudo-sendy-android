@@ -3,6 +3,7 @@ package com.uzun.pseudosendy.presentation.ui.orderform.main
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -86,11 +87,13 @@ fun OrderTypeCard(
 ) {
     Column(
         modifier = Modifier
+            .clickable(onClick = onClick)
             .fillMaxWidth()
             .background(state.backgroundColor, RoundedCornerShape(BUTTON_RADIUS_NORMAL))
             .border(1.dp, state.borderColor, RoundedCornerShape(BUTTON_RADIUS_NORMAL))
             .padding(horizontal = SPACE_M)
-            .padding(vertical = SPACE_S),
+            .padding(vertical = SPACE_S)
+        ,
     ) {
         OrderTypeCardHeader(type, state)
         content()
