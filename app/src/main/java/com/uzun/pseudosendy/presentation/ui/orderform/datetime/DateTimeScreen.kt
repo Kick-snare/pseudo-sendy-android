@@ -50,23 +50,38 @@ fun LazyListScope.datePicker(
     onValueChange: (String) -> Unit,
 ) = item {
     var text by remember{ mutableStateOf("") } // TODO 추후 상태를 Intent로 관리하도록 변경 (MVI)
-    DatePicker(value = text, onValueChange = { text=it }) { showDialog ->
+    DatePicker(
+        value = text, onValueChange = { text=it }
+    ) { formattedDate, showDialog ->
         RoundInputField(
             onClick = showDialog,
             extraContent = { EndedRightArrowIcon() },
-            content = { DateWithIcon(R.drawable.ic_clock, text) }
+            content = {
+                TextWithIcon(
+                    iconId = R.drawable.ic_clock,
+                    value = formattedDate,
+                    hint = "날짜 선택하기"
+                )
+            }
         )
     }
 }
 
 fun LazyListScope.timePicker(onClick: () -> Unit) = item {
-    RoundInputField(
-        onClick = onClick,
-        extraContent = { EndedRightArrowIcon() },
-        content = {
-
-        }
-    )
+    var text by remember{ mutableStateOf("") } // TODO 추후 상태를 Intent로 관리하도록 변경 (MVI)
+    TimePicker(onValueChange = { text=it }) {time, showDialog ->
+        RoundInputField(
+            onClick = showDialog,
+            extraContent = { EndedRightArrowIcon() },
+            content = {
+                TextWithIcon(
+                    iconId = R.drawable.ic_clock,
+                    value = time,
+                    hint = "시간 선택하기"
+                )
+            }
+        )
+    }
 }
 
 @Composable
@@ -77,20 +92,19 @@ fun BoxScope.EndedRightArrowIcon() = Icon(
 )
 
 @Composable
-fun DateWithIcon(iconId: Int, value: String) {
+fun TextWithIcon(
+    iconId: Int,
+    value: String,
+    hint: String,
+) {
     Icon(
         painterResource(id = iconId),
         contentDescription = null,
     )
     Spacer(modifier = Modifier.size(UIConst.SPACE_XXS))
 
-    val formattedDate by lazy {
-        val ymd = value.split("-")
-        runCatching { "" + ymd[0] + "년 " + ymd[1] + "월 " + ymd[2] + "일" }.getOrElse { "" }
-    }
-
     Text(
-        text = formattedDate.ifBlank { "날짜 선택하기" },
+        text = value.ifBlank { hint },
         style = PseudoSendyTheme.typography.Small.copy(
             color = if(value.isNotBlank()) DayGrayscale100 else DayGrayscale400
         )
