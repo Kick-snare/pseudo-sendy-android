@@ -7,19 +7,21 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import com.uzun.pseudosendy.presentation._const.UIConst
 import com.uzun.pseudosendy.ui.theme.DayBackgroundSecondary
 
 @Composable
-fun RoundGreyInputField(
-    onClick: () -> Unit = {},
+fun RoundInputField(
     modifier: Modifier = Modifier,
+    color : Color = DayBackgroundSecondary,
+    onClick: () -> Unit = {},
     extraContent: @Composable BoxScope.() -> Unit = {},
     content: @Composable RowScope.() -> Unit = {},
 ) = Box(
     Modifier
         .clickable(onClick = onClick)
-        .background(DayBackgroundSecondary, RoundedCornerShape(UIConst.BUTTON_RADIUS_NORMAL))
+        .background(color, RoundedCornerShape(UIConst.BUTTON_RADIUS_NORMAL))
         .fillMaxWidth()
         .padding(horizontal = UIConst.SPACE_M)
         .padding(vertical = UIConst.SPACE_S),

@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.uzun.pseudosendy.R
 import com.uzun.pseudosendy.presentation._const.UIConst
 import com.uzun.pseudosendy.presentation.ui.common.FormDetailBaseScreen
-import com.uzun.pseudosendy.presentation.ui.common.RoundGreyInputField
+import com.uzun.pseudosendy.presentation.ui.common.RoundInputField
 import com.uzun.pseudosendy.presentation.ui.orderform.main.CardType
 import com.uzun.pseudosendy.ui.theme.DayBlueBase
 import com.uzun.pseudosendy.ui.theme.DayGrayscale400
@@ -66,14 +66,14 @@ fun AddWayPoint(onClick: () -> Unit) = Row(
 }
 
 fun LazyListScope.departField(onClick: () -> Unit) = item {
-    RoundGreyInputField(
+    RoundInputField(
         onClick = onClick,
         content = { IconWithGreyText(R.drawable.ic_depart_solid, "출발지 주소 입력하기") }
     )
 }
 
 fun LazyListScope.arriveField(onClick: () -> Unit) = item {
-    RoundGreyInputField(
+    RoundInputField(
         onClick = onClick,
         content = { IconWithGreyText(R.drawable.ic_arrive_solid, "도착지 주소 입력하기") }
     )

@@ -1,5 +1,6 @@
 package com.uzun.pseudosendy.ui.theme
 
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -21,11 +22,16 @@ val NotoSansKR = FontFamily(
     Font(R.font.notosanskr_thin, FontWeight.Thin, FontStyle.Normal),
 )
 
-fun getNotoSansTextStyle(fontSize : TextUnit, weight: FontWeight = FontWeight.Normal) = TextStyle(
+fun getNotoSansTextStyle(
+    fontSize : TextUnit,
+    weight: FontWeight = FontWeight.Normal,
+    color: Color = Color.Black
+) = TextStyle(
     fontFamily = NotoSansKR,
     fontWeight = weight,
     fontSize = fontSize,
     platformStyle = PlatformTextStyle(includeFontPadding = false),
+    color = color
 )
 
 @Immutable

@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import com.uzun.pseudosendy.R
 import com.uzun.pseudosendy.presentation._const.UIConst.BUTTON_RADIUS_NORMAL
 import com.uzun.pseudosendy.presentation._const.UIConst.SPACE_M
-import com.uzun.pseudosendy.presentation._const.UIConst.SPACE_S
 import com.uzun.pseudosendy.presentation._const.UIConst.SPACE_XXS
 import com.uzun.pseudosendy.ui.theme.DayBorderDefault
 import com.uzun.pseudosendy.ui.theme.DayRedL60
@@ -103,12 +102,11 @@ fun OrderTypeCard(
     Column(
         modifier = Modifier
             .clickable(onClick = onClick)
+            .border(1.dp, state.borderColor, RoundedCornerShape(BUTTON_RADIUS_NORMAL))
             .fillMaxWidth()
             .background(state.backgroundColor, RoundedCornerShape(BUTTON_RADIUS_NORMAL))
-            .border(1.dp, state.borderColor, RoundedCornerShape(BUTTON_RADIUS_NORMAL))
-            .padding(horizontal = SPACE_M)
-            .padding(vertical = SPACE_S)
-        ,
+            .padding(vertical = SPACE_M)
+            .padding(horizontal = SPACE_M),
     ) {
         OrderTypeCardHeader(type, state)
         content()
