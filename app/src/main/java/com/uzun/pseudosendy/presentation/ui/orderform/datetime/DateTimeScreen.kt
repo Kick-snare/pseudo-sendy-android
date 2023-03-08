@@ -15,7 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.uzun.pseudosendy.R
 import com.uzun.pseudosendy.presentation._const.UIConst
 import com.uzun.pseudosendy.presentation.ui.common.FormDetailBaseScreen
-import com.uzun.pseudosendy.presentation.ui.common.RoundGreyInputField
+import com.uzun.pseudosendy.presentation.ui.common.RoundInputField
 import com.uzun.pseudosendy.presentation.ui.orderform.main.CardType
 import com.uzun.pseudosendy.ui.theme.DayGrayscale400
 import com.uzun.pseudosendy.ui.theme.PseudoSendyTheme
@@ -42,7 +42,7 @@ fun LazyListScope.guideText() = item {
 }
 
 fun LazyListScope.datePicker(onClick: () -> Unit) = item {
-    RoundGreyInputField(
+    RoundInputField(
         onClick = onClick,
         extraContent = { EndedRightArrowIcon() },
         content = { IconWithGreyText(R.drawable.ic_date, "날짜 선택하기") }
@@ -50,7 +50,7 @@ fun LazyListScope.datePicker(onClick: () -> Unit) = item {
 }
 
 fun LazyListScope.timePicker(onClick: () -> Unit) = item {
-    RoundGreyInputField(
+    RoundInputField(
         onClick = onClick,
         extraContent = { EndedRightArrowIcon() },
         content = { IconWithGreyText(R.drawable.ic_clock, "시간 선택하기") }

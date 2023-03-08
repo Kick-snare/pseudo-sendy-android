@@ -20,6 +20,7 @@ import com.uzun.pseudosendy.presentation._const.UIConst.SPACE_XS
 import com.uzun.pseudosendy.presentation.ui.orderform.OrderFormContract.OrderFormUiEvent
 import com.uzun.pseudosendy.presentation.ui.orderform.OrderFormContract.OrderFormUiSideEffect
 import com.uzun.pseudosendy.presentation.ui.orderform.datetime.DateTimeScreen
+import com.uzun.pseudosendy.presentation.ui.orderform.loaddetail.LoadDetailScreen
 import com.uzun.pseudosendy.presentation.ui.orderform.location.LocationScreen
 import com.uzun.pseudosendy.presentation.ui.orderform.main.OrderFormMainScreen
 import com.uzun.pseudosendy.presentation.ui.orderform.vehicle.VehicleScreen
@@ -145,7 +146,7 @@ fun OrderFormNavGraph(navController: NavHostController) {
         composable(
             route = OrderFormRoute.LOAD_DETAIL.route
         ) {
-            Text("LOAD_DETAIL")
+            LoadDetailScreen()
         }
 
         composable(

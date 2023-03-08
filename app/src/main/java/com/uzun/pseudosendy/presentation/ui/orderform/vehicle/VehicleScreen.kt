@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.uzun.pseudosendy.R
 import com.uzun.pseudosendy.presentation._const.UIConst
 import com.uzun.pseudosendy.presentation.ui.common.FormDetailBaseScreen
-import com.uzun.pseudosendy.presentation.ui.common.RoundGreyInputField
+import com.uzun.pseudosendy.presentation.ui.common.RoundInputField
 import com.uzun.pseudosendy.presentation.ui.orderform.main.CardType
 import com.uzun.pseudosendy.ui.theme.DayGrayscale100
 import com.uzun.pseudosendy.ui.theme.PseudoSendyTheme
@@ -43,7 +43,7 @@ fun LazyListScope.guideText() = item {
 }
 
 fun LazyListScope.vehicleDropdown(onClick: () -> Unit) = item {
-    RoundGreyInputField(
+    RoundInputField(
         onClick = onClick,
         extraContent = { DropDownIconButton() },
         content = { OptionTextField("1톤") }
@@ -51,7 +51,7 @@ fun LazyListScope.vehicleDropdown(onClick: () -> Unit) = item {
 }
 
 fun LazyListScope.vehicleOptionDropdown(onClick: () -> Unit) = item {
-    RoundGreyInputField(
+    RoundInputField(
         onClick = onClick,
         extraContent = { DropDownIconButton() },
         content = { OptionTextField("기본(카고)") }
