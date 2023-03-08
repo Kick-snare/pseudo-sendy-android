@@ -1,5 +1,6 @@
 package com.uzun.pseudosendy.presentation.ui.orderform.serviceoption
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -15,11 +16,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.uzun.pseudosendy.R
 import com.uzun.pseudosendy.presentation._const.UIConst
+import com.uzun.pseudosendy.presentation.ui.common.DropDownMenuSelector
 import com.uzun.pseudosendy.presentation.ui.common.FormDetailBaseScreen
 import com.uzun.pseudosendy.presentation.ui.common.ModalBottomSheet
 import com.uzun.pseudosendy.presentation.ui.common.RoundInputField
 import com.uzun.pseudosendy.presentation.ui.orderform.main.CardType
-import com.uzun.pseudosendy.presentation.ui.orderform.vehicle.DropDownIconButton
 import com.uzun.pseudosendy.ui.theme.DayBlueBase
 import com.uzun.pseudosendy.ui.theme.DayGrayscale100
 import com.uzun.pseudosendy.ui.theme.DayGrayscale300
@@ -69,10 +70,11 @@ fun LazyListScope.labelText(text: String) = item {
 }
 
 fun LazyListScope.dropdownSelector(onClick: () -> Unit = {}) = item {
-    RoundInputField(
-        onClick = onClick,
-        extraContent = { DropDownIconButton() },
-        content = { Text("본인이 직접 옮김") }
+    DropDownMenuSelector(
+        optionList =  listOf("본인이 직접 옮김", "상하차만 도움", "상하차 및 운반 도움", "기사님 도움 + 인부 1명 추가"),
+        onItemClick = { selectedOption ->
+            Log.e("test", "selected option -> $selectedOption")
+        }
     )
 }
 
