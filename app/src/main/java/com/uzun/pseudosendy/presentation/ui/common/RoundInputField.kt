@@ -19,7 +19,7 @@ fun RoundInputField(
     extraContent: @Composable BoxScope.() -> Unit = {},
     content: @Composable RowScope.() -> Unit = {},
 ) = Box(
-    Modifier
+    modifier
         .clickable(onClick = onClick)
         .background(color, RoundedCornerShape(UIConst.BUTTON_RADIUS_NORMAL))
         .fillMaxWidth()
@@ -27,7 +27,7 @@ fun RoundInputField(
         .padding(vertical = UIConst.SPACE_S),
 ) {
     Row(
-        modifier = modifier.fillMaxWidth().align(Alignment.CenterStart),
+        modifier = Modifier.fillMaxWidth().align(Alignment.CenterStart),
         verticalAlignment = Alignment.CenterVertically,
         content = content
     )
