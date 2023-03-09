@@ -34,6 +34,7 @@ fun DropDownMenuSelector(
                         DropdownMenuItem(onClick = {
                             selectedOption = option
                             onItemClick(option)
+                            isDropDownMenuExpanded = false
                         }) {
                             Text(
                                 text = option,
