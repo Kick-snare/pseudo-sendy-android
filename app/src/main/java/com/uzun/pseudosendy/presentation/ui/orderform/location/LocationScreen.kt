@@ -13,9 +13,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.uzun.pseudosendy.R
 import com.uzun.pseudosendy.presentation._const.UIConst
+import com.uzun.pseudosendy.presentation.model.Locations
+import com.uzun.pseudosendy.presentation.model._enum.CardType
 import com.uzun.pseudosendy.presentation.ui.common.FormDetailBaseScreen
 import com.uzun.pseudosendy.presentation.ui.common.RoundInputField
-import com.uzun.pseudosendy.presentation.ui.orderform.main.CardType
 import com.uzun.pseudosendy.ui.theme.DayBlueBase
 import com.uzun.pseudosendy.ui.theme.DayGrayscale400
 import com.uzun.pseudosendy.ui.theme.PseudoSendyTheme
@@ -23,15 +24,25 @@ import com.uzun.pseudosendy.ui.theme.PseudoSendyTheme
 @Preview
 @Composable
 fun LocationScreen(
-    // hiltViewModel()
+    locations: Locations = Locations(),
+    onDepartChanged: (String) -> Unit = {},
+    onArriveChanged: (String) -> Unit = {},
+    onWayPointAdded: (String) -> Unit = {},
+    onInputCompleted: () -> Unit = {},
 ) = FormDetailBaseScreen(
     cardType = CardType.LOCATION,
     arrangement = Arrangement.spacedBy(UIConst.SPACE_XS),
-    onButtonClicked = {},
+    onButtonClicked = onInputCompleted,
 ) {
-    guidePart {}
-    departField {}
-    arriveField {}
+    guidePart(onInputCompleted)
+    departField(
+        location = locations.depart,
+        onClick = { }
+    )
+    arriveField(
+        location = locations.arrive,
+        onClick = { }
+    )
 }
 
 fun LazyListScope.guidePart(onClick: () -> Unit) = item {
@@ -65,17 +76,25 @@ fun AddWayPoint(onClick: () -> Unit) = Row(
     )
 }
 
-fun LazyListScope.departField(onClick: () -> Unit) = item {
+fun LazyListScope.departField(
+    location : String,
+    onClick: () -> Unit
+) = item {
     RoundInputField(
         onClick = onClick,
-        content = { IconWithGreyText(R.drawable.ic_depart_solid, "출발지 주소 입력하기") }
+        content = {
+            IconWithGreyText(R.drawable.ic_depart_solid, location.ifBlank {"출발지 주소 입력하기"})
+        }
     )
 }
 
-fun LazyListScope.arriveField(onClick: () -> Unit) = item {
+fun LazyListScope.arriveField(
+    location : String,
+    onClick: () -> Unit
+) = item {
     RoundInputField(
         onClick = onClick,
-        content = { IconWithGreyText(R.drawable.ic_arrive_solid, "도착지 주소 입력하기") }
+        content = { IconWithGreyText(R.drawable.ic_arrive_solid, location.ifBlank {"도착지 주소 입력하기"}) }
     )
 }
 

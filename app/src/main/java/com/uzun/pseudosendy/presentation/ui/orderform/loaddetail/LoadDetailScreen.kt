@@ -7,25 +7,27 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.uzun.pseudosendy.presentation._const.UIConst
+import com.uzun.pseudosendy.presentation.model.LoadDetail
+import com.uzun.pseudosendy.presentation.model._enum.CardType
 import com.uzun.pseudosendy.presentation.ui.common.FormDetailBaseScreen
 import com.uzun.pseudosendy.presentation.ui.common.RoundInputField
-import com.uzun.pseudosendy.presentation.ui.orderform.main.CardType
 import com.uzun.pseudosendy.ui.theme.DayGrayscale300
 import com.uzun.pseudosendy.ui.theme.DayGrayscale400
 import com.uzun.pseudosendy.ui.theme.PseudoSendyTheme
 
-@Preview
 @Composable
-fun LoadDetailScreen() {
-    var localFocusManager = LocalFocusManager.current
-    var text by remember { mutableStateOf("") }
+fun LoadDetailScreen(
+    loadDetail: LoadDetail,
+    onLoadDetailEntered: (String) -> Unit = {},
+    onInputCompleted: () -> Unit = {}
+) {
+    val localFocusManager = LocalFocusManager.current
 
     FormDetailBaseScreen(
         modifier = Modifier.pointerInput(Unit) {
@@ -33,10 +35,10 @@ fun LoadDetailScreen() {
         },
         cardType = CardType.LOAD_DETAIL,
         arrangement = Arrangement.spacedBy(UIConst.SPACE_XS),
-        onButtonClicked = {},
+        onButtonClicked = onInputCompleted,
     ) {
         upperGuideText()
-        textAreaField(text) { text = it }
+        textAreaField(loadDetail.value, onLoadDetailEntered)
         bottomGuideText()
     }
 }

@@ -13,6 +13,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.uzun.pseudosendy.presentation._const.UIConst.SPACE_XL
 import com.uzun.pseudosendy.presentation._const.UIConst.SPACE_XS
+import com.uzun.pseudosendy.presentation.model._enum.CardType
+import com.uzun.pseudosendy.presentation.model._enum.TypeCardState
 import com.uzun.pseudosendy.presentation.ui.common.FloatingRoundBottomButton
 import com.uzun.pseudosendy.presentation.ui.orderform.OrderFormContract.OrderFormUiEvent
 import com.uzun.pseudosendy.presentation.ui.orderform.OrderFormContract.OrderFormUiSideEffect
@@ -36,6 +38,7 @@ fun OrderFormMainScreen(
                 NavigateToVehicleScreen -> cardNavMap[NavigateToVehicleScreen]?.invoke()
                 ShowDeleteFormDialog -> TODO()
                 is ShowToast -> TODO()
+                else -> {}
             }
         }
     }
@@ -45,17 +48,23 @@ fun OrderFormMainScreen(
             .fillMaxSize()
             .padding(horizontal = SPACE_XL)
     ) {
-        OrderFormContent(onCardClickedList = vm.onCardClickedList)
+        OrderFormContent(
+            getStateOf = vm::getStateOf,
+            onCardClickedList = vm.onCardClickedList
+        )
         CheckTransportationFeeButton { vm.setEvent(OrderFormUiEvent.OnPaySelectionButtonClicked) }
     }
 }
 
 @Composable
-fun BoxScope.OrderFormContent(onCardClickedList: List<() -> Unit>) =
+fun OrderFormContent(
+    getStateOf: (CardType) -> TypeCardState,
+    onCardClickedList: List<() -> Unit>,
+) =
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         orderFormMainHeadTextArea()
         item { Spacer(Modifier.size(SPACE_XL)) }
-        orderTypeCards(onCardClickedList)
+        orderTypeCards(getStateOf, onCardClickedList)
     }
 
 fun LazyListScope.orderFormMainHeadTextArea() = item {
@@ -64,11 +73,15 @@ fun LazyListScope.orderFormMainHeadTextArea() = item {
     Text(text = "원하시는 항목부터 입력해주세요", style = PseudoSendyTheme.typography.Normal)
 }
 
-fun LazyListScope.orderTypeCards(onCardClickedList: List<() -> Unit>) {
+fun LazyListScope.orderTypeCards(
+    getStateOf: (CardType) -> TypeCardState,
+    onCardClickedList: List<() -> Unit>,
+) {
     CardType.values().forEachIndexed { index, cardType ->
         item {
             OrderTypeCard(
                 type = cardType,
+                state = getStateOf(cardType),
                 onClick = onCardClickedList[index]
             ) {
                 when (cardType) {
@@ -85,9 +98,8 @@ fun LazyListScope.orderTypeCards(onCardClickedList: List<() -> Unit>) {
 }
 
 @Composable
-fun BoxScope.CheckTransportationFeeButton(onClick: () -> Unit)
-    = FloatingRoundBottomButton("운송비용 확인하기", onClick)
-
+fun BoxScope.CheckTransportationFeeButton(onClick: () -> Unit) =
+    FloatingRoundBottomButton("운송비용 확인하기", onClick)
 
 @Preview
 @Composable
