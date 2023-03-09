@@ -90,6 +90,25 @@ fun RoundedPrimaryButton(
 }
 
 @Composable
+fun RoundedPrimaryOutlinedButton(
+    onClick: () -> Unit = {},
+    modifier: Modifier = Modifier,
+    type: ButtonSize = ButtonSize.NORMAL,
+    content: @Composable RowScope.() -> Unit = {},
+) {
+    BaseRoundedButton(
+        onClick = onClick,
+        type = type,
+        modifier = modifier,
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = DayBlueBase,
+            contentColor = White,
+        ),
+        content = content
+    )
+}
+
+@Composable
 fun SquarePrimaryButton(
     onClick: () -> Unit = {},
     modifier: Modifier = Modifier,

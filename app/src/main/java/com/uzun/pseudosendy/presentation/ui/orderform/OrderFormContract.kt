@@ -33,7 +33,6 @@ class OrderFormContract {
         object NavigateToLoadDetailScreen : OrderFormUiSideEffect()
         object NavigateToServiceOptionScreen : OrderFormUiSideEffect()
         object NavigateToPaySelectionScreen : OrderFormUiSideEffect()
-        object NavigateToBack : OrderFormUiSideEffect()
         object ShowDeleteFormDialog : OrderFormUiSideEffect()
         data class ShowToast(val msg: String) : OrderFormUiSideEffect()
     }
