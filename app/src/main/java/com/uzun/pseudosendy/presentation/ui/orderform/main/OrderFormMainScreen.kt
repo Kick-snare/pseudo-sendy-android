@@ -33,12 +33,11 @@ fun OrderFormMainScreen(
                 NavigateToDateTimeScreen -> cardNavMap[NavigateToDateTimeScreen]?.invoke()
                 NavigateToLoadDetailScreen -> cardNavMap[NavigateToLoadDetailScreen]?.invoke()
                 NavigateToLocationScreen -> cardNavMap[NavigateToLocationScreen]?.invoke()
-                NavigateToPaySelectionScreen -> cardNavMap[NavigateToPaySelectionScreen]?.invoke()
                 NavigateToServiceOptionScreen -> cardNavMap[NavigateToServiceOptionScreen]?.invoke()
                 NavigateToVehicleScreen -> cardNavMap[NavigateToVehicleScreen]?.invoke()
+                NavigateToPaySelectionScreen -> cardNavMap[NavigateToPaySelectionScreen]?.invoke()
                 ShowDeleteFormDialog -> TODO()
                 is ShowToast -> TODO()
-                else -> {}
             }
         }
     }

@@ -2,6 +2,9 @@ pluginManagement {
     repositories {
         google()
         mavenCentral()
+        maven {
+            url 'https://naver.jfrog.io/artifactory/maven/'
+        }
         gradlePluginPortal()
     }
 }
@@ -10,6 +13,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven {
+            url 'https://naver.jfrog.io/artifactory/maven/'
+        }
     }
 }
 rootProject.name = "Pseudo Sendy"

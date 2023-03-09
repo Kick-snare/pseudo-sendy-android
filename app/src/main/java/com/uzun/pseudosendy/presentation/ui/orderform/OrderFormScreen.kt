@@ -1,5 +1,6 @@
 package com.uzun.pseudosendy.presentation.ui.orderform
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -25,6 +27,7 @@ import com.uzun.pseudosendy.presentation.ui.orderform.location.LocationScreen
 import com.uzun.pseudosendy.presentation.ui.orderform.main.OrderFormMainScreen
 import com.uzun.pseudosendy.presentation.ui.orderform.serviceoption.ServiceOptionScreen
 import com.uzun.pseudosendy.presentation.ui.orderform.vehicle.VehicleScreen
+import com.uzun.pseudosendy.presentation.ui.paycheck.PayCheckScreen
 import com.uzun.pseudosendy.ui.theme.White
 
 @Composable
@@ -93,7 +96,10 @@ fun OrderFormNavGraph(
                 },
                 OrderFormUiSideEffect.NavigateToServiceOptionScreen to {
                     navController.navigate(OrderFormRoute.SERVICE_OPTION_SELECTION.route)
-                }
+                },
+                OrderFormUiSideEffect.NavigateToPaySelectionScreen to {
+                    navController.navigate(OrderFormRoute.PAY_CHECK.route)
+                },
             )
             OrderFormMainScreen(cardNavMap = cardNavMap, vm = vm)
         }
@@ -152,6 +158,14 @@ fun OrderFormNavGraph(
                 onInputCompleted = { vm.onInputCompleted(CardType.SERVICE_OPTION, popBack) },
             )
         }
+
+        composable(OrderFormRoute.PAY_CHECK.route) {
+            val context = LocalContext.current
+            PayCheckScreen(
+                popBack = popBack,
+                nextStep = { Toast.makeText(context, "${uiState.dateTime}, ${uiState.locations}, ${uiState.loadDetail}, ${uiState.serviceOptions}", Toast.LENGTH_LONG).show() }
+            )
+        }
     }
 }
 
@@ -162,5 +176,6 @@ enum class OrderFormRoute(val route: String) {
     LOCATION_SELECTION("location-selection"),
     VEHICLE_SELECTION("vehicle-selection"),
     LOAD_DETAIL("load-detail"),
-    SERVICE_OPTION_SELECTION("service-option-selection")
+    SERVICE_OPTION_SELECTION("service-option-selection"),
+    PAY_CHECK("pay-check")
 }

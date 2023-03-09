@@ -12,6 +12,10 @@
         android:name=".PseudoSendyApplication"
         android:theme="@style/Theme.PseudoSendy"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.naver.maps.map.${naverMapClientId}"
+            android:value="${naverMapApiKey}"
+        />
         <activity
             android:name=".MainActivity"
             android:exported="true"
