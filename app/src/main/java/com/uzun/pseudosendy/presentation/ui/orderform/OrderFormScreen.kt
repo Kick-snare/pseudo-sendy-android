@@ -39,13 +39,23 @@ fun OrderFormScreen(
     ) {
         Spacer(Modifier.size(SPACE_XS))
         OrderFormTopBar(
-            onClickBackButton = { navController.popBackStack() },
+            onClickBackButton = {
+                navController.navigate(
+                    route = OrderFormRoute.ORDER_FORM_MAIN.route,
+                    builder = { popUpTo(OrderFormRoute.ORDER_FORM_ROOT.route)  }
+                )
+            },
             onClickDeleteButton = { vm.setEvent(OrderFormUiEvent.OnDeleteButtonClicked) }
         )
         OrderFormNavGraph(
-            navController,
-            { navController.popBackStack() },
-            vm
+            navController = navController,
+            popBack = {
+                navController.navigate(
+                    route = OrderFormRoute.ORDER_FORM_MAIN.route,
+                    builder = { popUpTo(OrderFormRoute.ORDER_FORM_ROOT.route)  }
+                )
+            },
+            vm = vm
         )
     }
 }
@@ -59,6 +69,7 @@ fun OrderFormNavGraph(
     val uiState by vm.uiState.collectAsState()
 
     NavHost(
+        route = OrderFormRoute.ORDER_FORM_ROOT.route,
         modifier = Modifier.fillMaxSize(),
         navController = navController,
         startDestination = OrderFormRoute.ORDER_FORM_MAIN.route,
@@ -145,6 +156,7 @@ fun OrderFormNavGraph(
 }
 
 enum class OrderFormRoute(val route: String) {
+    ORDER_FORM_ROOT("order-form-root"),
     ORDER_FORM_MAIN("order-form-main"),
     DATE_TIME_SELECTION("date-time-selection"),
     LOCATION_SELECTION("location-selection"),
