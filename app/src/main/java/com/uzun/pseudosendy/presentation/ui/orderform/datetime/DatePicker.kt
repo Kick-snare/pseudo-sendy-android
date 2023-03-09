@@ -12,10 +12,9 @@ import java.time.format.DateTimeFormatter
 fun DatePicker(
     value: String,
     onValueChange: (String) -> Unit = {},
-    pattern: String = "yyyy-MM-dd",
     content: @Composable RowScope.(String, () -> Unit) -> Unit,
 ) {
-    val formatter = DateTimeFormatter.ofPattern(pattern)
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     val date = if (value.isNotBlank()) LocalDate.parse(value, formatter) else LocalDate.now()
     val dialog = DatePickerDialog(
         LocalContext.current,

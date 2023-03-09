@@ -1,6 +1,5 @@
 package com.uzun.pseudosendy.presentation.ui.orderform.serviceoption
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -16,48 +15,67 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.uzun.pseudosendy.R
 import com.uzun.pseudosendy.presentation._const.UIConst
+import com.uzun.pseudosendy.presentation.model.ServiceOptions
+import com.uzun.pseudosendy.presentation.model._enum.CardType
 import com.uzun.pseudosendy.presentation.ui.common.DropDownMenuSelector
 import com.uzun.pseudosendy.presentation.ui.common.FormDetailBaseScreen
 import com.uzun.pseudosendy.presentation.ui.common.ModalBottomSheet
 import com.uzun.pseudosendy.presentation.ui.common.RoundInputField
-import com.uzun.pseudosendy.presentation.ui.orderform.main.CardType
 import com.uzun.pseudosendy.ui.theme.DayBlueBase
 import com.uzun.pseudosendy.ui.theme.DayGrayscale100
 import com.uzun.pseudosendy.ui.theme.DayGrayscale300
 import com.uzun.pseudosendy.ui.theme.PseudoSendyTheme
 
 @Composable
-fun ServiceOptionScreen() = ModalBottomSheet(
+fun ServiceOptionScreen(
+    serviceOptions: ServiceOptions,
+    onServiceOptionSelected: (String) -> Unit,
+    onRideWithUnClicked: () -> Unit,
+    onInputCompleted: () -> Unit = {},
+    onAgreement: () -> Unit = {},
+) = ModalBottomSheet(
     activityContentScope = { onExpanded ->
         ServiceOptionScreenContent(
+            serviceOptions = serviceOptions,
+            onServiceOptionSelected = onServiceOptionSelected,
+            onRideWithUnClicked = onRideWithUnClicked,
+            onInputCompleted = onInputCompleted,
             expandBottomSheet = onExpanded
         )
     },
     sheetContent = { onHidden ->
         AgreementSheetContent(
             hideBottomSheet = onHidden,
-            onAgreement = {}
+            onAgreement = onAgreement
         )
     }
 )
 
 @Composable
 fun ServiceOptionScreenContent(
+    serviceOptions: ServiceOptions,
+    onServiceOptionSelected: (String) -> Unit,
+    onRideWithUnClicked: () -> Unit,
+    onInputCompleted: () -> Unit = {},
     expandBottomSheet: () -> Unit,
 ) = FormDetailBaseScreen(
     cardType = CardType.SERVICE_OPTION,
     arrangement = Arrangement.spacedBy(UIConst.SPACE_XS),
-    onButtonClicked = {},
+    onButtonClicked = onInputCompleted,
 ) {
     labelText("운반에 기사님 도움이 필요한가요?")
-    dropdownSelector()
+
+    dropdownSelector(serviceOptions.serviceOption, onServiceOptionSelected)
 
     item { Spacer(Modifier.size(UIConst.SPACE_XL)) }
 
     labelText("차량 동승이 필요하신가요?")
+
     checkBoxField(
-        isChecked = false,
-        onClick = expandBottomSheet
+        isChecked = serviceOptions.rideWith,
+        onClick =
+        if (serviceOptions.rideWith) onRideWithUnClicked
+        else expandBottomSheet
     )
 }
 
@@ -69,12 +87,14 @@ fun LazyListScope.labelText(text: String) = item {
     )
 }
 
-fun LazyListScope.dropdownSelector(onClick: () -> Unit = {}) = item {
+fun LazyListScope.dropdownSelector(
+    value: String,
+    onValueChanged: (String) -> Unit,
+) = item {
     DropDownMenuSelector(
-        optionList =  listOf("본인이 직접 옮김", "상하차만 도움", "상하차 및 운반 도움", "기사님 도움 + 인부 1명 추가"),
-        onItemClick = { selectedOption ->
-            Log.e("test", "selected option -> $selectedOption")
-        }
+        value = value,
+        optionList = listOf("본인이 직접 옮김", "상하차만 도움", "상하차 및 운반 도움", "기사님 도움 + 인부 1명 추가"),
+        onItemClick = onValueChanged
     )
 }
 

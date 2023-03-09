@@ -7,35 +7,40 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import com.uzun.pseudosendy.R
 import com.uzun.pseudosendy.presentation._const.UIConst
+import com.uzun.pseudosendy.presentation.model.DateTime
+import com.uzun.pseudosendy.presentation.model._enum.CardType
 import com.uzun.pseudosendy.presentation.ui.common.FormDetailBaseScreen
 import com.uzun.pseudosendy.presentation.ui.common.RoundInputField
-import com.uzun.pseudosendy.presentation.ui.orderform.main.CardType
 import com.uzun.pseudosendy.ui.theme.DayGrayscale100
 import com.uzun.pseudosendy.ui.theme.DayGrayscale400
 import com.uzun.pseudosendy.ui.theme.PseudoSendyTheme
 
-@Preview
 @Composable
 fun DateTimeScreen(
-    // hiltViewModel()
+    dateTime: DateTime = DateTime(),
+    onDateChanged: (String) -> Unit = {},
+    onTimeChanged: (String) -> Unit = {},
+    onInputCompleted: () -> Unit = {},
 ) = FormDetailBaseScreen(
     cardType = CardType.DATETIME,
     arrangement = Arrangement.spacedBy(UIConst.SPACE_XS),
-    onButtonClicked = {},
+    onButtonClicked = onInputCompleted,
 ) {
     guideText()
     datePicker(
-        value = "",
-        onValueChange = {},
+        value = dateTime.date,
+        onValueChange = onDateChanged,
     )
-    timePicker {}
+    timePicker(
+        value = dateTime.time,
+        onValueChange = onTimeChanged
+    )
 }
 
 fun LazyListScope.guideText() = item {
@@ -49,9 +54,8 @@ fun LazyListScope.datePicker(
     value: String,
     onValueChange: (String) -> Unit,
 ) = item {
-    var text by remember{ mutableStateOf("") } // TODO 추후 상태를 Intent로 관리하도록 변경 (MVI)
     DatePicker(
-        value = text, onValueChange = { text=it }
+        value = value, onValueChange = onValueChange
     ) { formattedDate, showDialog ->
         RoundInputField(
             onClick = showDialog,
@@ -67,9 +71,14 @@ fun LazyListScope.datePicker(
     }
 }
 
-fun LazyListScope.timePicker(onClick: () -> Unit) = item {
-    var text by remember{ mutableStateOf("") } // TODO 추후 상태를 Intent로 관리하도록 변경 (MVI)
-    TimePicker(onValueChange = { text=it }) {time, showDialog ->
+fun LazyListScope.timePicker(
+    value: String,
+    onValueChange: (String) -> Unit,
+) = item {
+    TimePicker(
+        value = value,
+        onValueChange = onValueChange
+    ) {time, showDialog ->
         RoundInputField(
             onClick = showDialog,
             extraContent = { EndedRightArrowIcon() },

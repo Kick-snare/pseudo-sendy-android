@@ -1,6 +1,5 @@
 package com.uzun.pseudosendy.presentation.ui.orderform.vehicle
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.size
@@ -15,9 +14,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.uzun.pseudosendy.R
 import com.uzun.pseudosendy.presentation._const.UIConst
+import com.uzun.pseudosendy.presentation.model.VehicleOptions
+import com.uzun.pseudosendy.presentation.model._enum.CardType
 import com.uzun.pseudosendy.presentation.ui.common.DropDownMenuSelector
 import com.uzun.pseudosendy.presentation.ui.common.FormDetailBaseScreen
-import com.uzun.pseudosendy.presentation.ui.orderform.main.CardType
 import com.uzun.pseudosendy.ui.theme.DayGrayscale100
 import com.uzun.pseudosendy.ui.theme.PseudoSendyTheme
 
@@ -25,15 +25,24 @@ import com.uzun.pseudosendy.ui.theme.PseudoSendyTheme
 @Preview
 @Composable
 fun VehicleScreen(
-    // hiltViewModel()
+    vehicleOptions: VehicleOptions = VehicleOptions(),
+    onVehicleTypeChanged: (String) -> Unit = {},
+    onVehicleOptionChanged: (String) -> Unit = {},
+    onInputCompleted: () -> Unit = {},
 ) = FormDetailBaseScreen(
     cardType = CardType.VEHICLE,
     arrangement = Arrangement.spacedBy(UIConst.SPACE_XS),
-    onButtonClicked = {},
+    onButtonClicked = onInputCompleted,
 ) {
     guideText()
-    vehicleDropdown {}
-    vehicleOptionDropdown {}
+    vehicleDropdown(
+        type = vehicleOptions.vehicleType,
+        onItemClick = onVehicleTypeChanged
+    )
+    vehicleOptionDropdown(
+        option = vehicleOptions.vehicleOption,
+        onItemClick = onVehicleOptionChanged
+    )
 }
 
 fun LazyListScope.guideText() = item {
@@ -43,21 +52,25 @@ fun LazyListScope.guideText() = item {
     )
 }
 
-fun LazyListScope.vehicleDropdown(onClick: () -> Unit) = item {
+fun LazyListScope.vehicleDropdown(
+    type: String,
+    onItemClick: (String) -> Unit
+) = item {
     DropDownMenuSelector(
+        value = type,
         optionList =  listOf("1톤", "라보", "다마스", "2.5톤", "3.5톤", "5톤", "5톤+"),
-        onItemClick = { selectedOption ->
-            Log.e("test", "selected option -> $selectedOption")
-        }
+        onItemClick = onItemClick
     )
 }
 
-fun LazyListScope.vehicleOptionDropdown(onClick: () -> Unit) = item {
+fun LazyListScope.vehicleOptionDropdown(
+    option: String,
+    onItemClick: (String) -> Unit
+) = item {
     DropDownMenuSelector(
+        value = option,
         optionList =  listOf("기본(카고)", "탑차", "리프트", "윙바디", "냉장", "냉동"),
-        onItemClick = { selectedOption ->
-            Log.e("test", "selected option -> $selectedOption")
-        }
+        onItemClick = onItemClick
     )
 }
 

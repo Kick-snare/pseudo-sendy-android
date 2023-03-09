@@ -12,6 +12,7 @@ import com.uzun.pseudosendy.ui.theme.PseudoSendyTheme
 
 @Composable
 fun DropDownMenuSelector(
+    value: String,
     optionList: List<String>,
     onItemClick: (String) -> Unit = {},
 ) {
@@ -23,7 +24,7 @@ fun DropDownMenuSelector(
         extraContent = { DropDownIconButton() },
         content = {
             Column {
-                Text(text = selectedOption, style = PseudoSendyTheme.typography.Small)
+                Text(text = value.ifBlank { selectedOption }, style = PseudoSendyTheme.typography.Small)
 
                 DropdownMenu(
                     modifier = Modifier.fillMaxWidth(0.7f),
@@ -34,6 +35,7 @@ fun DropDownMenuSelector(
                         DropdownMenuItem(onClick = {
                             selectedOption = option
                             onItemClick(option)
+                            isDropDownMenuExpanded = false
                         }) {
                             Text(
                                 text = option,

@@ -13,7 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.uzun.pseudosendy.presentation._const.UIConst
-import com.uzun.pseudosendy.presentation.ui.orderform.main.CardType
+import com.uzun.pseudosendy.presentation.model._enum.CardType
 import com.uzun.pseudosendy.ui.theme.DayBorderDefault
 import com.uzun.pseudosendy.ui.theme.PseudoSendyTheme
 

@@ -1,21 +1,22 @@
 package com.uzun.pseudosendy.presentation.ui.orderform
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.uzun.pseudosendy.R
 import com.uzun.pseudosendy.presentation._const.UIConst.SPACE_XS
+import com.uzun.pseudosendy.presentation.model._enum.CardType
+import com.uzun.pseudosendy.presentation.ui.common.OrderFormTopBar
 import com.uzun.pseudosendy.presentation.ui.orderform.OrderFormContract.OrderFormUiEvent
 import com.uzun.pseudosendy.presentation.ui.orderform.OrderFormContract.OrderFormUiSideEffect
 import com.uzun.pseudosendy.presentation.ui.orderform.datetime.DateTimeScreen
@@ -38,67 +39,40 @@ fun OrderFormScreen(
     ) {
         Spacer(Modifier.size(SPACE_XS))
         OrderFormTopBar(
-            onClickBackButton = { navController.popBackStack() },
+            onClickBackButton = {
+                navController.navigate(
+                    route = OrderFormRoute.ORDER_FORM_MAIN.route,
+                    builder = { popUpTo(OrderFormRoute.ORDER_FORM_ROOT.route)  }
+                )
+            },
             onClickDeleteButton = { vm.setEvent(OrderFormUiEvent.OnDeleteButtonClicked) }
         )
-        OrderFormNavGraph(navController)
-    }
-}
-
-@Composable
-fun OrderFormTopBar(
-    onClickBackButton: () -> Unit,
-    onClickDeleteButton: () -> Unit,
-) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = SPACE_XS)
-            .padding(vertical = 11.dp)
-    ) {
-        TopBackIconButton(onClick = onClickBackButton)
-        TopDeleteIconButton(onClick = onClickDeleteButton)
-    }
-}
-
-@Composable
-fun BoxScope.TopBackIconButton(
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit,
-) {
-    IconButton(
-        modifier = modifier.align(Alignment.CenterStart),
-        onClick = onClick
-    ) {
-        Icon(
-            painter = painterResource(id = R.drawable.ic_back_24),
-            contentDescription = "back button"
+        OrderFormNavGraph(
+            navController = navController,
+            popBack = {
+                navController.navigate(
+                    route = OrderFormRoute.ORDER_FORM_MAIN.route,
+                    builder = { popUpTo(OrderFormRoute.ORDER_FORM_ROOT.route)  }
+                )
+            },
+            vm = vm
         )
     }
 }
 
 @Composable
-fun BoxScope.TopDeleteIconButton(
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit,
+fun OrderFormNavGraph(
+    navController: NavHostController,
+    popBack: () -> Unit = {},
+    vm: OrderFormViewModel
 ) {
-    IconButton(
-        modifier = modifier.align(Alignment.CenterEnd),
-        onClick = onClick
-    ) {
-        Icon(
-            painter = painterResource(id = R.drawable.ic_delete_bin),
-            contentDescription = "delete written form"
-        )
-    }
-}
+    val uiState by vm.uiState.collectAsState()
 
-@Composable
-fun OrderFormNavGraph(navController: NavHostController) {
     NavHost(
+        route = OrderFormRoute.ORDER_FORM_ROOT.route,
         modifier = Modifier.fillMaxSize(),
         navController = navController,
-        startDestination = OrderFormRoute.ORDER_FORM_MAIN.route
+        startDestination = OrderFormRoute.ORDER_FORM_MAIN.route,
     ) {
 
         composable(
@@ -121,42 +95,68 @@ fun OrderFormNavGraph(navController: NavHostController) {
                     navController.navigate(OrderFormRoute.SERVICE_OPTION_SELECTION.route)
                 }
             )
-            OrderFormMainScreen(cardNavMap = cardNavMap)
+            OrderFormMainScreen(cardNavMap = cardNavMap, vm = vm)
         }
 
         composable(
             route = OrderFormRoute.DATE_TIME_SELECTION.route
         ) {
-            DateTimeScreen()
+            DateTimeScreen(
+                dateTime = uiState.dateTime,
+                onDateChanged = { vm.setEvent(OrderFormUiEvent.OnDateSelected(it)) },
+                onTimeChanged = { vm.setEvent(OrderFormUiEvent.OnTimeSelected(it)) },
+                onInputCompleted = { vm.onInputCompleted(CardType.DATETIME, popBack) },
+            )
         }
 
         composable(
             route = OrderFormRoute.LOCATION_SELECTION.route
         ) {
-            LocationScreen()
+            LocationScreen(
+                locations = uiState.locations,
+                onDepartChanged = { vm.setEvent(OrderFormUiEvent.OnDepartSelected(it)) },
+                onArriveChanged = { vm.setEvent(OrderFormUiEvent.OnArriveSelected(it)) },
+                onInputCompleted = { vm.onInputCompleted(CardType.LOCATION, popBack) }
+            )
         }
 
         composable(
             route = OrderFormRoute.VEHICLE_SELECTION.route
         ) {
-            VehicleScreen()
+            VehicleScreen(
+                vehicleOptions = uiState.vehicleOptions,
+                onVehicleTypeChanged = { vm.setEvent(OrderFormUiEvent.OnVehicleTypeSelected(it)) },
+                onVehicleOptionChanged = { vm.setEvent(OrderFormUiEvent.OnVehicleOptionSelected(it)) },
+                onInputCompleted = { vm.onInputCompleted(CardType.VEHICLE, popBack) }
+            )
         }
 
         composable(
             route = OrderFormRoute.LOAD_DETAIL.route
         ) {
-            LoadDetailScreen()
+            LoadDetailScreen(
+                loadDetail = uiState.loadDetail,
+                onLoadDetailEntered = { vm.setEvent(OrderFormUiEvent.OnLoadDetailEntered(it)) },
+                onInputCompleted = { vm.onInputCompleted(CardType.LOAD_DETAIL, popBack) }
+            )
         }
 
         composable(
             route = OrderFormRoute.SERVICE_OPTION_SELECTION.route
         ) {
-            ServiceOptionScreen()
+            ServiceOptionScreen(
+                serviceOptions = uiState.serviceOptions,
+                onServiceOptionSelected = { vm.setEvent(OrderFormUiEvent.OnServiceOptionSelected(it)) },
+                onRideWithUnClicked = { vm.setEvent(OrderFormUiEvent.OnRideWithOptionClicked(false)) },
+                onAgreement = { vm.setEvent(OrderFormUiEvent.OnRideWithOptionClicked(true)) },
+                onInputCompleted = { vm.onInputCompleted(CardType.SERVICE_OPTION, popBack) },
+            )
         }
     }
 }
 
 enum class OrderFormRoute(val route: String) {
+    ORDER_FORM_ROOT("order-form-root"),
     ORDER_FORM_MAIN("order-form-main"),
     DATE_TIME_SELECTION("date-time-selection"),
     LOCATION_SELECTION("location-selection"),
