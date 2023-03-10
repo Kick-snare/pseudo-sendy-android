@@ -12,7 +12,6 @@ class OrderFormContract {
     data class OrderFormUiState(
         val isLoading: Boolean = false,
         val isFormCompleted: Boolean = false,
-
         val dateTimeTypeState: TypeCardState = DEFAULT,
         val locationTypeState: TypeCardState = DEFAULT,
         val vehicleTypeState: TypeCardState = DEFAULT,
@@ -21,6 +20,7 @@ class OrderFormContract {
 
         val dateTime: DateTime = DateTime(),
         val locations: Locations = Locations(),
+        val locationList: List<Location> = emptyList(),
         val vehicleOptions: VehicleOptions = VehicleOptions(),
         val loadDetail: LoadDetail = LoadDetail(),
         val serviceOptions: ServiceOptions = ServiceOptions(),
@@ -43,8 +43,10 @@ class OrderFormContract {
         data class OnTimeSelected(val value: String) : OrderFormUiEvent()
 
         object OnLocationCardClicked : OrderFormUiEvent()
-        data class OnDepartSelected(val value: String) : OrderFormUiEvent()
-        data class OnArriveSelected(val value: String) : OrderFormUiEvent()
+        data class OnDepartSelected(val value: Location) : OrderFormUiEvent()
+        data class OnArriveSelected(val value: Location) : OrderFormUiEvent()
+
+        data class OnLocationSearched(val value: String) : OrderFormUiEvent()
 
         object OnVehicleCardClicked : OrderFormUiEvent()
         data class OnVehicleTypeSelected(val value: String) : OrderFormUiEvent()

@@ -1,8 +1,8 @@
 package com.uzun.pseudosendy.presentation.model
 
 data class Locations(
-    val depart: String = "",
-    val arrive: String = ""
+    val depart: Location = Location(),
+    val arrive: Location = Location(),
 ) : FormData {
-    override fun isCompleted() = depart.isNotBlank() && arrive.isNotBlank()
+    override fun isCompleted() = depart.isCompleted() && arrive.isCompleted()
 }

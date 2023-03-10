@@ -14,10 +14,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import com.naver.maps.map.compose.ExperimentalNaverMapApi
-import com.naver.maps.map.compose.NaverMap
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.CameraPosition
+import com.naver.maps.map.compose.*
 import com.uzun.pseudosendy.R
 import com.uzun.pseudosendy.presentation._const.UIConst
+import com.uzun.pseudosendy.presentation.model.Locations
 import com.uzun.pseudosendy.presentation.ui.common.BaseRoundedButton
 import com.uzun.pseudosendy.presentation.ui.common.ButtonSize
 import com.uzun.pseudosendy.presentation.ui.common.RoundedPrimaryButton
@@ -26,13 +29,44 @@ import com.uzun.pseudosendy.ui.theme.*
 @OptIn(ExperimentalNaverMapApi::class)
 @Composable
 fun PayCheckScreen(
+    locations: Locations,
     popBack: () -> Unit = {},
-    nextStep: () -> Unit = {}
+    nextStep: () -> Unit = {},
+    vm: PayCheckViewModel = hiltViewModel(),
 ) {
+    LaunchedEffect(true) {
+        vm.getRoute(locations.depart.lngLat, locations.arrive.lngLat)
+    }
+
     Box(Modifier.fillMaxSize()) {
 
         FloatingInfoCard()
-        NaverMap(modifier = Modifier.zIndex(-1F))
+        NaverMap(
+            modifier = Modifier
+                .zIndex(-1F)
+                .align(Alignment.TopCenter)
+                .fillMaxHeight(0.6F),
+            cameraPositionState = CameraPositionState(
+                position = CameraPosition(
+                    LatLng(
+                        (locations.depart.lngLat.lat + locations.arrive.lngLat.lat) / 2,
+                        (locations.depart.lngLat.lng + locations.arrive.lngLat.lng) / 2
+                    ),
+                    11.0
+                )
+            )
+
+        ) {
+            Marker(
+                state = MarkerState(position = locations.depart.lngLat.toNaverLatLng()),
+                captionText = locations.depart.roadAddr
+            )
+            Marker(
+                state = MarkerState(position = locations.arrive.lngLat.toNaverLatLng()),
+                captionText = locations.arrive.roadAddr
+            )
+            if(vm.pointList.isNotEmpty()) PathOverlay(coords = vm.pointList)
+        }
         BottomPaySelectionSheet(popBack, nextStep)
     }
 }
@@ -110,7 +144,9 @@ fun BoxScope.BottomPaySelectionSheet(
 
 @Composable
 fun PaySelectionHead() = Row(
-    modifier = Modifier.fillMaxWidth().padding(bottom = UIConst.SPACE_XXS),
+    modifier = Modifier
+        .fillMaxWidth()
+        .padding(bottom = UIConst.SPACE_XXS),
     horizontalArrangement = Arrangement.SpaceBetween
 ) {
     Text(
@@ -174,7 +210,9 @@ fun NavigatingButtons(
     popBack: () -> Unit = {},
     nextStep: () -> Unit = {}
 ) = Row(
-    modifier = Modifier.fillMaxWidth().padding(top = UIConst.SPACE_S),
+    modifier = Modifier
+        .fillMaxWidth()
+        .padding(top = UIConst.SPACE_S),
     horizontalArrangement = Arrangement.spacedBy(UIConst.SPACE_S)
 )  {
     BaseRoundedButton(

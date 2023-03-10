@@ -13,10 +13,12 @@ import com.uzun.pseudosendy.ui.theme.PseudoSendyTheme
 @Composable
 fun BoxScope.FloatingRoundBottomButton(
     text: String,
+    enabled: Boolean = true,
     onClick: () -> Unit,
 ) {
     RoundedPrimaryButton(
         onClick = onClick,
+        enabled = enabled,
         modifier = Modifier
             .align(Alignment.BottomCenter)
             .padding(bottom = UIConst.SPACE_XL),
