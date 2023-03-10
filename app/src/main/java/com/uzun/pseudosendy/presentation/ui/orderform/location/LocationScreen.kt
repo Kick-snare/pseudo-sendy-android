@@ -6,42 +6,71 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.uzun.pseudosendy.R
 import com.uzun.pseudosendy.presentation._const.UIConst
+import com.uzun.pseudosendy.presentation.model.Location
 import com.uzun.pseudosendy.presentation.model.Locations
 import com.uzun.pseudosendy.presentation.model._enum.CardType
 import com.uzun.pseudosendy.presentation.ui.common.FormDetailBaseScreen
+import com.uzun.pseudosendy.presentation.ui.common.ModalBottomSheet
 import com.uzun.pseudosendy.presentation.ui.common.RoundInputField
 import com.uzun.pseudosendy.ui.theme.DayBlueBase
+import com.uzun.pseudosendy.ui.theme.DayGrayscale100
 import com.uzun.pseudosendy.ui.theme.DayGrayscale400
 import com.uzun.pseudosendy.ui.theme.PseudoSendyTheme
 
-@Preview
 @Composable
 fun LocationScreen(
     locations: Locations = Locations(),
-    onDepartChanged: (String) -> Unit = {},
-    onArriveChanged: (String) -> Unit = {},
-    onWayPointAdded: (String) -> Unit = {},
+    onDepartChanged: (Location) -> Unit = {},
+    onArriveChanged: (Location) -> Unit = {},
+    onWayPointAdded: (Location) -> Unit = {},
     onInputCompleted: () -> Unit = {},
-) = FormDetailBaseScreen(
-    cardType = CardType.LOCATION,
-    arrangement = Arrangement.spacedBy(UIConst.SPACE_XS),
-    onButtonClicked = onInputCompleted,
 ) {
-    guidePart(onInputCompleted)
-    departField(
-        location = locations.depart,
-        onClick = { }
-    )
-    arriveField(
-        location = locations.arrive,
-        onClick = { }
+    var searchMode by remember { mutableStateOf(true) }
+    ModalBottomSheet(
+        sheetElevation = 0.dp,
+        sheetShape = RectangleShape,
+        activityContentScope = { onExpanded ->
+            FormDetailBaseScreen(
+                cardType = CardType.LOCATION,
+                arrangement = Arrangement.spacedBy(UIConst.SPACE_XS),
+                onButtonClicked = onInputCompleted,
+            ) {
+                guidePart(onInputCompleted)
+                departField(
+                    location = locations.depart,
+                    onClick = {
+                        onExpanded()
+                        searchMode = true
+                    }
+                )
+                arriveField(
+                    location = locations.arrive,
+                    onClick = {
+                        onExpanded()
+                        searchMode = false
+                    }
+                )
+            }
+        },
+        sheetContent = { onHidden ->
+            LocationSearchSheetScreen(
+                searchMode = searchMode,
+                onHidden = onHidden,
+                onLocationSelected = { location ->
+                    if (searchMode) onDepartChanged(location)
+                    else onArriveChanged(location)
+                }
+            )
+        }
     )
 }
 
@@ -77,31 +106,42 @@ fun AddWayPoint(onClick: () -> Unit) = Row(
 }
 
 fun LazyListScope.departField(
-    location : String,
-    onClick: () -> Unit
+    location: Location,
+    onClick: () -> Unit,
 ) = item {
     RoundInputField(
         onClick = onClick,
         content = {
-            IconWithGreyText(R.drawable.ic_depart_solid, location.ifBlank {"출발지 주소 입력하기"})
+            IconWithText(
+                R.drawable.ic_depart_solid,
+                location.roadAddr.ifBlank { "출발지 주소 입력하기" },
+                if (location.roadAddr.isNotBlank()) DayGrayscale100 else DayGrayscale400
+            )
         }
     )
 }
 
 fun LazyListScope.arriveField(
-    location : String,
-    onClick: () -> Unit
+    location: Location,
+    onClick: () -> Unit,
 ) = item {
     RoundInputField(
         onClick = onClick,
-        content = { IconWithGreyText(R.drawable.ic_arrive_solid, location.ifBlank {"도착지 주소 입력하기"}) }
+        content = {
+            IconWithText(
+                R.drawable.ic_arrive_solid,
+                location.roadAddr.ifBlank { "도착지 주소 입력하기" },
+                if (location.roadAddr.isNotBlank()) DayGrayscale100 else DayGrayscale400
+            )
+        }
     )
 }
 
 @Composable
-fun IconWithGreyText(
+fun IconWithText(
     iconId: Int,
     text: String,
+    color: Color = DayGrayscale400,
 ) {
     Icon(
         painterResource(id = iconId),
@@ -111,7 +151,7 @@ fun IconWithGreyText(
     Text(
         text = text,
         style = PseudoSendyTheme.typography.Small,
-        color = DayGrayscale400
+        color = color
     )
 }
 

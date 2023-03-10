@@ -1,5 +1,9 @@
 package com.uzun.pseudosendy.presentation.ui.orderform
 
+import androidx.lifecycle.viewModelScope
+import com.uzun.pseudosendy.data.repository.MapsRepository
+import com.uzun.pseudosendy.presentation.model.LngLat
+import com.uzun.pseudosendy.presentation.model.Location
 import com.uzun.pseudosendy.presentation.model._enum.CardType
 import com.uzun.pseudosendy.presentation.model._enum.TypeCardState
 import com.uzun.pseudosendy.presentation.model._enum.TypeCardState.ERROR
@@ -8,11 +12,12 @@ import com.uzun.pseudosendy.presentation.ui.common.base.BaseViewModel
 import com.uzun.pseudosendy.presentation.ui.orderform.OrderFormContract.*
 import com.uzun.pseudosendy.presentation.ui.orderform.OrderFormContract.OrderFormUiEvent.*
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class OrderFormViewModel @Inject constructor(
-    // some repositories inject 해야됨...
+    private val mapsRepository: MapsRepository,
 ) : BaseViewModel<OrderFormUiState, OrderFormUiSideEffect, OrderFormUiEvent>(OrderFormUiState()) {
 
     val onCardClickedList: List<() -> Unit> by lazy {
@@ -64,6 +69,7 @@ class OrderFormViewModel @Inject constructor(
             is OnVehicleOptionSelected -> onVehicleOptionSelected(event.value)
             is OnServiceOptionSelected -> onServiceOptionSelected(event.value)
             is OnRideWithOptionClicked -> onRideWithOptionClicked(event.value)
+            is OnLocationSearched -> getSearchedLocationList(event.value)
         }
     }
 
@@ -79,7 +85,7 @@ class OrderFormViewModel @Inject constructor(
 
     fun onInputCompleted(
         cardType: CardType,
-        popBack: () -> Unit
+        popBack: () -> Unit,
     ) {
         when (cardType) {
             CardType.DATETIME -> {
@@ -108,15 +114,16 @@ class OrderFormViewModel @Inject constructor(
                 else setState { this.copy(serviceOptionTypeState = ERROR()) }
             }
         }
+        checkAllFormFilled()
         popBack()
     }
 
-    private fun onDepartSelected(value: String) {
+    private fun onDepartSelected(value: Location) {
         val newLoc = this.uiState.value.locations.copy(depart = value)
         setState { this.copy(locations = newLoc) }
     }
 
-    private fun onArriveSelected(value: String) {
+    private fun onArriveSelected(value: Location) {
         val newLoc = this.uiState.value.locations.copy(arrive = value)
         setState { this.copy(locations = newLoc) }
     }
@@ -146,4 +153,26 @@ class OrderFormViewModel @Inject constructor(
         setState { this.copy(serviceOptions = newServiceOption) }
     }
 
+    private fun getSearchedLocationList(query: String) {
+        viewModelScope.launch {
+            val res = mapsRepository.getLocationBy(query)
+            if (res.status != "200") return@launch
+            setState {
+                this.copy(locationList = res.addresses.map {
+                    Location(
+                        it.jibunAddress,
+                        it.roadAddress,
+                        LngLat(it.x.toDouble(), it.y.toDouble())
+                    )
+                })
+            }
+        }
+    }
+
+    private fun checkAllFormFilled() {
+        var isAllFilled = true
+        CardType.values().map { getStateOf(it) }.forEach { if(!(it is FILLED)) isAllFilled = false }
+        setState { this.copy(isFormCompleted = isAllFilled) }
+//        setState { this.copy(isFormCompleted = true) }
+    }
 }

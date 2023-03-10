@@ -58,6 +58,7 @@ fun LazyListScope.vehicleDropdown(
 ) = item {
     DropDownMenuSelector(
         value = type,
+        default = "차량 종류 선택",
         optionList =  listOf("1톤", "라보", "다마스", "2.5톤", "3.5톤", "5톤", "5톤+"),
         onItemClick = onItemClick
     )
@@ -69,6 +70,7 @@ fun LazyListScope.vehicleOptionDropdown(
 ) = item {
     DropDownMenuSelector(
         value = option,
+        default = "차량 옵션 선택",
         optionList =  listOf("기본(카고)", "탑차", "리프트", "윙바디", "냉장", "냉동"),
         onItemClick = onItemClick
     )

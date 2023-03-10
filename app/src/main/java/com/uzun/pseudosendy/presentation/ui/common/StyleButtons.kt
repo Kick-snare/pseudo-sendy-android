@@ -33,12 +33,14 @@ enum class ButtonSize(val width: Dp, val radius: Dp, val padding: Dp) {
 fun BaseRoundedButton(
     onClick: () -> Unit,
     type: ButtonSize,
+    enabled : Boolean = true,
     modifier: Modifier,
     colors: ButtonColors,
     content: @Composable RowScope.() -> Unit,
 ) {
     Button(
         onClick = onClick,
+        enabled = enabled,
         shape = RoundedCornerShape(type.radius),
         colors = colors,
         modifier = modifier
@@ -72,12 +74,14 @@ fun BaseSquareButton(
 fun RoundedPrimaryButton(
     onClick: () -> Unit = {},
     modifier: Modifier = Modifier,
+    enabled : Boolean = true,
     type: ButtonSize = ButtonSize.NORMAL,
     content: @Composable RowScope.() -> Unit = {},
 ) {
     BaseRoundedButton(
         onClick = onClick,
         type = type,
+        enabled = enabled,
         modifier = modifier,
         colors = ButtonDefaults.buttonColors(
             backgroundColor = DayBlueBase,

@@ -13,11 +13,12 @@ import com.uzun.pseudosendy.ui.theme.PseudoSendyTheme
 @Composable
 fun DropDownMenuSelector(
     value: String,
+    default: String,
     optionList: List<String>,
     onItemClick: (String) -> Unit = {},
 ) {
     var isDropDownMenuExpanded by remember { mutableStateOf(false) }
-    var selectedOption by remember { mutableStateOf(optionList.first()) }
+    var selectedOption by remember { mutableStateOf(default) }
 
     RoundInputField(
         onClick = { isDropDownMenuExpanded = !isDropDownMenuExpanded },

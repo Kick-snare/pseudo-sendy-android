@@ -2,15 +2,15 @@ package com.uzun.pseudosendy.presentation.ui.orderform
 
 import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -30,36 +30,32 @@ import com.uzun.pseudosendy.presentation.ui.orderform.vehicle.VehicleScreen
 import com.uzun.pseudosendy.presentation.ui.paycheck.PayCheckScreen
 import com.uzun.pseudosendy.ui.theme.White
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OrderFormScreen(
     navController: NavHostController = rememberNavController(),
     vm: OrderFormViewModel = hiltViewModel(),
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(White)
+        modifier = Modifier.fillMaxSize()
     ) {
         Spacer(Modifier.size(SPACE_XS))
-        OrderFormTopBar(
-            onClickBackButton = {
-                navController.navigate(
-                    route = OrderFormRoute.ORDER_FORM_MAIN.route,
-                    builder = { popUpTo(OrderFormRoute.ORDER_FORM_ROOT.route)  }
+
+        Scaffold(
+            topBar = {
+                OrderFormTopBar(
+                    onClickBackButton = { navController.navigateUp() },
+                    onClickDeleteButton = { vm.setEvent(OrderFormUiEvent.OnDeleteButtonClicked) }
                 )
-            },
-            onClickDeleteButton = { vm.setEvent(OrderFormUiEvent.OnDeleteButtonClicked) }
-        )
-        OrderFormNavGraph(
-            navController = navController,
-            popBack = {
-                navController.navigate(
-                    route = OrderFormRoute.ORDER_FORM_MAIN.route,
-                    builder = { popUpTo(OrderFormRoute.ORDER_FORM_ROOT.route)  }
-                )
-            },
-            vm = vm
-        )
+            }
+        ) {
+            OrderFormNavGraph(
+                navController = navController,
+                popBack = { navController.navigateUp() },
+                vm = vm
+            )
+            it
+        }
     }
 }
 
@@ -67,13 +63,16 @@ fun OrderFormScreen(
 fun OrderFormNavGraph(
     navController: NavHostController,
     popBack: () -> Unit = {},
-    vm: OrderFormViewModel
+    vm: OrderFormViewModel,
 ) {
     val uiState by vm.uiState.collectAsState()
 
     NavHost(
         route = OrderFormRoute.ORDER_FORM_ROOT.route,
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .padding(top = 60.dp)
+            .fillMaxSize()
+            .background(White),
         navController = navController,
         startDestination = OrderFormRoute.ORDER_FORM_MAIN.route,
     ) {
@@ -122,7 +121,7 @@ fun OrderFormNavGraph(
                 locations = uiState.locations,
                 onDepartChanged = { vm.setEvent(OrderFormUiEvent.OnDepartSelected(it)) },
                 onArriveChanged = { vm.setEvent(OrderFormUiEvent.OnArriveSelected(it)) },
-                onInputCompleted = { vm.onInputCompleted(CardType.LOCATION, popBack) }
+                onInputCompleted = { vm.onInputCompleted(CardType.LOCATION, popBack) },
             )
         }
 
@@ -162,8 +161,9 @@ fun OrderFormNavGraph(
         composable(OrderFormRoute.PAY_CHECK.route) {
             val context = LocalContext.current
             PayCheckScreen(
+                locations = uiState.locations,
                 popBack = popBack,
-                nextStep = { Toast.makeText(context, "${uiState.dateTime}, ${uiState.locations}, ${uiState.loadDetail}, ${uiState.serviceOptions}", Toast.LENGTH_LONG).show() }
+                nextStep = { Toast.makeText(context, "주문 프로세스 완료!", Toast.LENGTH_SHORT).show() }
             )
         }
     }

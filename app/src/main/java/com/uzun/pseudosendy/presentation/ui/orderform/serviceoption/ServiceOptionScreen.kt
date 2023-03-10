@@ -93,6 +93,7 @@ fun LazyListScope.dropdownSelector(
 ) = item {
     DropDownMenuSelector(
         value = value,
+        default = "짐 운반 옵션 선택",
         optionList = listOf("본인이 직접 옮김", "상하차만 도움", "상하차 및 운반 도움", "기사님 도움 + 인부 1명 추가"),
         onItemClick = onValueChanged
     )
